@@ -32,6 +32,8 @@ class TvShowsController < ApplicationController
     end
   end
 
+
+
   # GET /tv_shows/1/edit
   def edit
     @tv_show = TvShow.find(params[:id])
@@ -67,6 +69,11 @@ class TvShowsController < ApplicationController
         format.json { render json: @tv_show.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def load_torrent
+    @tv_show = TvShow.find(params[:id])
+
   end
 
   # DELETE /tv_shows/1
