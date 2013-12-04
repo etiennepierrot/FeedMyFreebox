@@ -1,4 +1,8 @@
 FeedMyFreebox::Application.routes.draw do
+  get "login/return"
+  get "login/index"
+  get "login/", to: 'login#index'
+
   resources :tv_shows
 
 

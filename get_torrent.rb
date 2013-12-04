@@ -22,8 +22,8 @@ teams = ["LOL", "KILLERS", "IMMERSE", "DIMENSION"]
 xml_string = request_torrent(request)
 items = parse_list_episode(xml_string)
 best_choice = get_best_choice(items, teams)
-freebox_connector =  FreeboxConnector.new(password)
-freebox_connector.send(best_choice)
+#freebox_connector =  FreeboxConnector.new(password)
+#freebox_connector.send(best_choice)
 
 puts "Title : " + best_choice.title
 puts "Seeds : " + best_choice.seed
