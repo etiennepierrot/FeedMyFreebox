@@ -11,7 +11,6 @@ def parse_list_episode(xml_string)
     url = thing.at_xpath('torrent:magnetURI').content
     item = Episode.new(title, seeds, url)
     items.push item
-    puts item.title
   end
   return items
 end
