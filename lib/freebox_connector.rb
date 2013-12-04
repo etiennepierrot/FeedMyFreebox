@@ -28,7 +28,7 @@ class FreeboxConnector
             :url      => "http://mafreebox.freebox.fr:9091/transmission/rpc"
         )
 
-    return transmission_api;
+    return transmission_api
   end
 end
 

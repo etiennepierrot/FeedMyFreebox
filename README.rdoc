@@ -1,6 +1,9 @@
+
+I start this project for learn RoR, so be indulgent.
+
 For the moment you can send find torrent and send to your freebox with this command line
 
-ruby lib/torrent_reader.rb "the big bang theory s07e09 720p"  passwordofyourbox
+ruby get_torrent.rb "the big bang theory s07e09 720p"  passwordofyourfreebox
 
 for windows 7/8 install maybe node.js (not sure about that)
 
