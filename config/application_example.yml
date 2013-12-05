@@ -1,0 +1,14 @@
+#update information with your keys and rename to application.yml
+
+defaults: &defaults
+  betaseries_public_key : your_public_key  # put your public here
+  betaseries_private_key: your_private_key # put your private key here
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

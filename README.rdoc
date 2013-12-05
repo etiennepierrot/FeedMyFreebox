@@ -1,9 +1,21 @@
-
-I start this project for learn RoR, so be indulgent.
+Introduction
+------------
+I start this project for learn RoR, so be indulgent. 
+The purpose of this project is to make a web app :
+ - login with betaseries (OAuth 2.0)
+ - check your new favorite TV Show on GPL licence
+ - get the best torrent link adapted with the subtitle available on betaseries
+ - send the torrent on your freebox
+ - get the subtitle
+ 
 
 For the moment you can send find torrent and send to your freebox with this command line
-
 ruby get_torrent.rb "the big bang theory s07e09 720p"  passwordofyourfreebox
 
 for windows 7/8 install maybe node.js (not sure about that)
 
+## Configuration ##
+bundle install
+Rename file application_example.yml to application.yml and put your betaseries API
+
+> Written with Etienne.
