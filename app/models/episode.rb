@@ -1,8 +1,11 @@
 class Episode
-  attr_reader :title, :seed, :url
-  def initialize(title, seed, url)
-    @title = title
-    @seed = seed
-    @url = url
+
+  def initialize(episode_hash)
+    @episode_hash = episode_hash
   end
+
+  def id
+    return @episode_hash["id"]
+  end
+
 end

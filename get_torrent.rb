@@ -2,7 +2,7 @@ require_relative 'lib/parse_list_episode'
 require_relative 'lib/torrent_selector'
 require_relative 'lib/freebox_connector'
 require_relative 'lib/torrent_reader'
-require_relative 'app/models/episode'
+require_relative 'app/models/torrent'
 
 
 class Object

@@ -1,5 +1,5 @@
 require 'transmission_api'
-require_relative '../app/models/episode'
+require_relative '../app/models/torrent'
 
 class FreeboxConnector
 
