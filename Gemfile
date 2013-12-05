@@ -9,7 +9,8 @@ gem 'sqlite3'
 gem 'nokogiri'
 gem 'transmission_api'
 gem 'rest-client'
-gem 'oauth2'
+
+
 
 # Gems used only for assets and not required
 # in production environments by default.
