@@ -19,7 +19,7 @@ end
 request = ARGV[0]
 password = ARGV[1]
 
-teams = ["LOL", "KILLERS", "IMMERSE", "DIMENSION"]
+teams = ["LOL", "KILLERS", "IMMERSE", "DIMENSION", "WEB-DL"]
 
 xml_string = request_torrent(request)
 items = parse_list_episode(xml_string)
