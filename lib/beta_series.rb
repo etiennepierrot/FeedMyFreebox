@@ -5,10 +5,10 @@ require_relative 'betaseries_connector'
 require_relative '../app/models/tv_show'
 
 code = ARGV[0]
-betaseries_connector = BetaseriesConnector.new()
+#betaseries_connector = BetaseriesConnector.new()
 
-user_token = betaseries_connector.get_user_token(code)
-shows = betaseries_connector.get_episodes(user_token)
+user_token = BetaseriesConnector.get_user_token(code)
+shows = BetaseriesConnector.get_episodes(user_token)
 teams = ["LOL", "KILLERS", "IMMERSE", "DIMENSION", "WEB-DL", "2HD"]
 NB_EPISODE_MAX = 3
 

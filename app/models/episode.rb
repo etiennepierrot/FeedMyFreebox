@@ -11,9 +11,7 @@ class Episode
   end
 
   def fetch_subtitles_available(user_token, teams)
-
-    betaseries_connector = BetaseriesConnector.new()
-    hash_subtitles = betaseries_connector.get_subtitles(user_token, @betaseries_id)
+    hash_subtitles = BetaseriesConnector.get_subtitles(user_token, @betaseries_id)
     @subtitles = hash_subtitles.map{|s| Subtitle.new(s)}
     @subtitles.select! { |s| teams.any? { |t| s.file.include?(t) } }
 
