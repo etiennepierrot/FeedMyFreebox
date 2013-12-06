@@ -11,6 +11,7 @@ gem 'transmission_api', :git => 'git://github.com/etiennepierrot/TransmissionApi
 gem 'rest-client'
 gem 'ruby-hmac'
 gem 'multipart-post'
+gem 'zip'
 
 
 
