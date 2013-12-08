@@ -1,2 +1,7 @@
-<h1>Login#return<h1>
-<p>Find me in app/views/login/return.html.erb</p>
+<h1>Login#return</h1>
+<p>Salut <%= @user.betaseries_login %></p>
+  <% if @freebox.nil? %>
+      <p> No freebox found  </p>
+    <p><%= link_to('Associez votre freebox', controller: 'freeboxes',
+                   action: 'attach', message: 'Welcome!') %> </p>
+  <% end %>

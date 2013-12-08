@@ -11,12 +11,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131202211524) do
+ActiveRecord::Schema.define(:version => 20131208201529) do
+
+  create_table "freeboxes", :force => true do |t|
+    t.integer  "track_authorization_id"
+    t.string   "app_token"
+    t.string   "app_name"
+    t.string   "app_id"
+    t.string   "app_version"
+    t.integer  "users_id"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.string   "session_token"
+  end
 
   create_table "tv_shows", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "betaseries_id"
+    t.string   "betaseries_login"
+    t.string   "betaseries_token"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
 end

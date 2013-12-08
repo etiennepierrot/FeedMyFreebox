@@ -1,4 +1,8 @@
 FeedMyFreebox::Application.routes.draw do
+  get "freeboxes/attach"
+  get "freeboxes/get"
+  get "freeboxes/confirm"
+
   get "login/return"
   get "login/index"
   get "login/", to: 'login#index'

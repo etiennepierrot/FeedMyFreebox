@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  track_authorization_id: 1
+  app_token: MyString
+  app_name: MyString
+  app_id: MyString
+  app_version: MyString
+
+two:
+  track_authorization_id: 1
+  app_token: MyString
+  app_name: MyString
+  app_id: MyString
+  app_version: MyString

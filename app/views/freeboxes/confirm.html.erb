@@ -1,0 +1,9 @@
+<h1>Freeboxes#confirm</h1>
+<p>
+  <% if @freebox.session_token.nil? %>
+    <%= @message%>
+    <% else %>
+    Well done!!
+  <% end%>
+
+</p>

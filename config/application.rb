@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require_relative '../lib/freeboxos_connector'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -60,5 +61,7 @@ module FeedMyFreebox
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    FreeboxOSConnector.initialize
   end
 end

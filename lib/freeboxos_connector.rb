@@ -7,10 +7,11 @@ require 'hmac-sha1'
 require 'openssl'
 require 'net/http/post/multipart'
 require 'fileutils'
+require_relative '../app/models/freebox'
 
 module FreeboxOSConnector
   @@app_id = "fr.freebox.feedmyfreebox"
-  @@client = RestClient::Resource.new("http://mafreebox.freebox.fr")
+  @@client = RestClient::Resource.new("http://82.240.165.61/")
   @@FreeboxHeader = "X-Fbx-App-Auth"
   @@discover_client
   @@api_base_url
@@ -46,12 +47,12 @@ module FreeboxOSConnector
     @@discover_client = RestClient::Resource.new("http://mafreebox.freebox.fr#{@@api_base_url}#{@@version}")
   end
 
-  def self.create_track_authorization
+  def self.create_track_authorization(freebox)
 
     params = {
-        "app_id" => @@app_id,
-        "app_name" => "Feed My Freebox",
-        "app_version" => "0.0.1",
+        "app_id" => freebox.app_id,
+        "app_name" =>  freebox.app_name,
+        "app_version" =>  freebox.app_version,
         "device_name" =>  Socket.gethostname
     }
 
@@ -139,12 +140,12 @@ module FreeboxOSConnector
 end
 
 
-def is_movie(filename, moviename)
+def is_movie(filename, movie_name)
   extensions = [".mp4", ".mkv", ".avi"]
   isMovie = extensions.any?{ |e| filename.end_with?(e)}
   if isMovie
 
-    splited_name = moviename.split(' ')
+    splited_name = movie_name.split(' ')
     splited_name.each do |s|
       if !filename.include?(s)
         return false
@@ -157,8 +158,6 @@ def is_movie(filename, moviename)
 end
 
 def send_subtitle_with_movie( directory, movie_name, subtitle_name, session_token )
-  puts directory
-  puts session_token
   list_directory = FreeboxOSConnector.list_directory(session_token, directory)
   list_directory_without_dot_dir = list_directory.select { |d| d["name"] != "." and d["name"] != ".." }
 
@@ -176,41 +175,79 @@ def send_subtitle_with_movie( directory, movie_name, subtitle_name, session_toke
 end
 
 
-FreeboxOSConnector.initialize
-#puts FreeboxOSConnector.create_track_authorization
-track_id = 22
-app_token = "A88Cudkvct00J1FOpU1rRIKBrmrKW0X44IMx31guVaGCqJGHgS1uTNpE+ZstT+OT"
-#track_authorization = FreeboxOSConnector.get_track_authorization(track_id)
-challenge =FreeboxOSConnector.get_challenge
-password = FreeboxOSConnector.create_password(app_token, challenge)
-session_token = FreeboxOSConnector.open_session(password)['session_token']
+#FreeboxOSConnector.initialize
+#
+#freebox = Freebox.new
+#freebox.app_name = 'Feed my Freebox'
+#freebox.app_id = 'fr.freebox.feedmyfreebox'
+#freebox.app_version = '0.0.1'
+#puts FreeboxOSConnector.create_track_authorization freebox
+#track_id = 22
+#app_token = "A88Cudkvct00J1FOpU1rRIKBrmrKW0X44IMx31guVaGCqJGHgS1uTNpE+ZstT+OT"
+##track_authorization = FreeboxOSConnector.get_track_authorization(track_id)
+#challenge =FreeboxOSConnector.get_challenge
+#password = FreeboxOSConnector.create_password(app_token, challenge)
+#session_token = FreeboxOSConnector.open_session(password)['session_token']
+#
+#
+#puts session_token
+#tv_show_name = 'The Walking Dead'
+#code = 'S04E05'
+#videos_directory = "L0Rpc3F1ZSBkdXIvVmlkw6lvcw=="
+#
+#
+#
+#FreeboxOSConnector.make_directory( session_token, videos_directory, tv_show_name ) #
+#list_video_directory = FreeboxOSConnector.list_directory(session_token, videos_directory)
+#directory = list_video_directory.select{ |f| f["name"] == tv_show_name and f["mimetype"] == "inode/directory"}[0]
+#tv_show_directory =  directory["path"]
+#
+#FreeboxOSConnector.create_download(session_token, "magnet:?xt=urn:btih:A6D390133B2AE10926C48EB120E60662FE195C28&dn=the+walking+dead+s04e05+vostfr+gillop+avi&tr=udp%3A%2F%2Ftracker.istole.it%3A80%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337", tv_show_directory)
+#send_subtitle_with_movie(tv_show_directory, "#{tv_show_name} #{code}", "Borgen.S01E10.720p.BluRay.x264.anoXmous_swe.srt", session_token)
+#
+#
+#FreeboxOSConnector.initialize
+#
+#freebox = Freebox.new
+#freebox.app_name = 'Feed my Freebox'
+#freebox.app_id = 'fr.freebox.feedmyfreebox'
+#freebox.app_version = '0.0.1'
+#puts FreeboxOSConnector.create_track_authorization freebox
+#track_id = 22
+#app_token = "A88Cudkvct00J1FOpU1rRIKBrmrKW0X44IMx31guVaGCqJGHgS1uTNpE+ZstT+OT"
+##track_authorization = FreeboxOSConnector.get_track_authorization(track_id)
+#challenge =FreeboxOSConnector.get_challenge
+#password = FreeboxOSConnector.create_password(app_token, challenge)
+#session_token = FreeboxOSConnector.open_session(password)['session_token']
+#
+#
+#puts session_token
+#tv_show_name = 'The Walking Dead'
+#code = 'S04E05'
+#videos_directory = "L0Rpc3F1ZSBkdXIvVmlkw6lvcw=="
+#
+#
+#
+#FreeboxOSConnector.make_directory( session_token, videos_directory, tv_show_name ) #
+#list_video_directory = FreeboxOSConnector.list_directory(session_token, videos_directory)
+#directory = list_video_directory.select{ |f| f["name"] == tv_show_name and f["mimetype"] == "inode/directory"}[0]
+#tv_show_directory =  directory["path"]
+#
+#FreeboxOSConnector.create_download(session_token, "magnet:?xt=urn:btih:A6D390133B2AE10926C48EB120E60662FE195C28&dn=the+walking+dead+s04e05+vostfr+gillop+avi&tr=udp%3A%2F%2Ftracker.istole.it%3A80%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337", tv_show_directory)
+#send_subtitle_with_movie(tv_show_directory, "#{tv_show_name} #{code}", "Borgen.S01E10.720p.BluRay.x264.anoXmous_swe.srt", session_token)
+#
+#
 
-tv_show_name = 'The Walking Dead'
-code = 'S04E05'
-videos_directory = "L0Rpc3F1ZSBkdXIvVmlkw6lvcw=="
 
 
 
-FreeboxOSConnector.make_directory( session_token, videos_directory, tv_show_name ) #
-list_video_directory = FreeboxOSConnector.list_directory(session_token, videos_directory)
-directory = list_video_directory.select{ |f| f["name"] == tv_show_name and f["mimetype"] == "inode/directory"}[0]
-tv_show_directory =  directory["path"]
-
-FreeboxOSConnector.create_download(session_token, "magnet:?xt=urn:btih:A6D390133B2AE10926C48EB120E60662FE195C28&dn=the+walking+dead+s04e05+vostfr+gillop+avi&tr=udp%3A%2F%2Ftracker.istole.it%3A80%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337", tv_show_directory)
-send_subtitle_with_movie(tv_show_directory, "#{tv_show_name} #{code}", "Borgen.S01E10.720p.BluRay.x264.anoXmous_swe.srt", session_token)
-
-
-
-
-
-
-download_id = 33
-download_response = FreeboxOSConnector.get_download(session_token, download_id)
-status = download_response["status"]
-
-if status == 'seeding'
-  FreeboxOSConnector.stop_download(session_token, download_id)["status"]
-end
+#download_id = 33
+#download_response = FreeboxOSConnector.get_download(session_token, download_id)
+#status = download_response["status"]
+#
+#if status == 'seeding'
+#  FreeboxOSConnector.stop_download(session_token, download_id)["status"]
+#end
 
 
 

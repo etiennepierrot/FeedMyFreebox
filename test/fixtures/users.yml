@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  betaseries_id: MyString
+  betaseries_login: MyString
+  betaseries_token: MyString
+
+two:
+  betaseries_id: MyString
+  betaseries_login: MyString
+  betaseries_token: MyString
