@@ -5,7 +5,7 @@ require 'base64'
 require 'cgi'
 require 'hmac-sha1'
 require 'openssl'
-
+require 'net/http/post/multipart'
 
 module FreeboxOSConnector
   @@app_id = "fr.freebox.feedmyfreebox"
@@ -35,6 +35,7 @@ module FreeboxOSConnector
       raise "une erreur s'est produite pendant l'authorization"
     end
   end
+
   def self.initialize
     json = @@client["api_version"].get()
     json_parse = JSON.parse(json)
@@ -112,8 +113,29 @@ module FreeboxOSConnector
     @@discover_client["fs/mkdir"].post(params.to_json, get_session_header(session_token))
   end
 
+  def self.upload_file(session_token, parent, filename_original, new_filename )
+    params = {
+        "dirname" => parent,
+        "upload_name" => new_filename
+    }
+    json = @@discover_client["upload/"].post(params.to_json, get_session_header(session_token))
 
+    response_upload = get_response(json)
+    upload_id = response_upload["id"]
 
+     puts upload_id
+    url = URI.parse("http://mafreebox.freebox.fr/api/v1/upload/#{upload_id}/send")
+    File.open("C:\\srt\\#{filename_original}") do |file|
+      req = Net::HTTP::Post::Multipart.new url.path,
+                                           {"file" => UploadIO.new(file, "text/plain", new_filename),
+                                            'X-Fbx-App-Auth' => session_token}
+      res = Net::HTTP.start(url.host, url.port) do |http|
+        puts http.request(req)
+      end
+      puts res
+    end
+
+  end
 
 end
 
@@ -125,11 +147,16 @@ app_token = "A88Cudkvct00J1FOpU1rRIKBrmrKW0X44IMx31guVaGCqJGHgS1uTNpE+ZstT+OT"
 challenge =FreeboxOSConnector.get_challenge
 password = FreeboxOSConnector.create_password(app_token, challenge)
 session_token = FreeboxOSConnector.open_session(password)['session_token']
+puts session_token
 
 tv_show_name = 'The Walking Dead'
 videos_directory = "L0Rpc3F1ZSBkdXIvVmlkw6lvcw=="
 
+
+
 FreeboxOSConnector.make_directory( session_token, videos_directory, tv_show_name )
+FreeboxOSConnector.upload_file(session_token, videos_directory, "Borgen.S01E10.720p.BluRay.x264.anoXmous_swe.srt", "newfilename.srt")
+
 list_video_directory = FreeboxOSConnector.list_directory(session_token, videos_directory)
 directory = list_video_directory.select{ |f| f["name"] == tv_show_name and f["mimetype"] == "inode/directory"}[0]
 FreeboxOSConnector.create_download(session_token, "magnet:?xt=urn:btih:A6D390133B2AE10926C48EB120E60662FE195C28&dn=the+walking+dead+s04e05+vostfr+gillop+avi&tr=udp%3A%2F%2Ftracker.istole.it%3A80%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337", directory["path"])

@@ -10,6 +10,7 @@ gem 'nokogiri'
 gem 'transmission_api', :git => 'git://github.com/etiennepierrot/TransmissionApi.git', :branch => 'AddDirDownloadForCreate'
 gem 'rest-client'
 gem 'ruby-hmac'
+gem 'multipart-post'
 
 
 
