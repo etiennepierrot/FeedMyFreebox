@@ -7,7 +7,9 @@ class FreeboxConnector
     @password = password
   end
 
-  def send(episode)
+  def send(episode, download_dir)
+    base_encode = Base64.encode64("/Disque dur/Musiques/")
+    puts base_encode
     torrent = transmission_api.create(episode.url)
   end
 
@@ -22,10 +24,11 @@ class FreeboxConnector
   def transmission_api()  #static method (known as a class method in ruby)
 
     transmission_api =
-        TransmissionApi.new(
+        TransmissionApi::Client.new(
             :username => "freebox",
             :password => @password,
-            :url      => "http://mafreebox.freebox.fr:9091/transmission/rpc"
+            :url      => "http://mafreebox.freebox.fr:9091/transmission/rpc",
+            :debug_mode => true
         )
 
     return transmission_api

@@ -7,8 +7,10 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 gem 'nokogiri'
-gem 'transmission_api'
+gem 'transmission_api', :git => 'git://github.com/etiennepierrot/TransmissionApi.git', :branch => 'AddDirDownloadForCreate'
 gem 'rest-client'
+gem 'ruby-hmac'
+
 
 
 
