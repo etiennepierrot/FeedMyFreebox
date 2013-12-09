@@ -12,6 +12,7 @@ gem 'rest-client'
 gem 'ruby-hmac'
 gem 'multipart-post'
 gem "twitter-bootstrap-rails"
+gem 'zip'
 
 
 

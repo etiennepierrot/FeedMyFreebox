@@ -123,6 +123,7 @@ GEM
     uglifier (2.3.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    zip (2.0.2)
 
 PLATFORMS
   x86-mingw32
@@ -140,3 +141,4 @@ DEPENDENCIES
   transmission_api!
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
+  zip

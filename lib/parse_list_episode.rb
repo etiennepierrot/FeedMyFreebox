@@ -12,5 +12,6 @@ def parse_list_episode(xml_string)
     item = Torrent.new(title, seeds, url)
     items.push item
   end
+
   return items
 end
