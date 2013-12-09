@@ -16,6 +16,8 @@ class Episode
   end
 
   def fetch_subtitles_available(user_token, teams)
+
+    puts "fetch #{@tv_show_name} #{@code}"
     hash_subtitles = BetaseriesConnector.get_subtitles(user_token, @betaseries_id)
 
     @subtitles = Array.new
@@ -32,6 +34,8 @@ class Episode
       end
     end
     set_subtitles_of_know_team(teams)
+    #puts "Subtitle of know team :"
+    #puts @subtitles_of_know_teams.count
   end
 
   def set_subtitles_of_know_team(teams)
@@ -46,7 +50,6 @@ class Episode
   end
 
   def get_best_torrent
-
     torrent_of_team_with_subtitles = Array.new
     @torrents.each do |torrent|
       @teams_who_have_subtitles.each do |team|
@@ -70,8 +73,12 @@ class Episode
     return false
   end
 
-  def find_torrent()
-    result = request_torrent( @code + " " +  @tv_show_name + " 720p")
+  def find_torrent(isHD)
+    if isHD
+      result = request_torrent( @code + " " +  @tv_show_name + " 720p")
+    else
+      result = request_torrent( @code + " " +  @tv_show_name)
+    end
 
     if result.nil?
       puts "no torrent match found for #{@tv_show_name} - #{@code}"
@@ -81,9 +88,14 @@ class Episode
       @torrent = get_best_torrent
 
       if @torrent.nil?
-        @subtitles.each{|s| puts s.file }
-        @torrents.each{|t| puts t.title}
-        puts "no match found for #{@tv_show_name} - #{@code}"
+        #@subtitles.each{|s| puts s.file }
+        #@torrents.each{|t| puts t.title}
+        if isHD
+          find_torrent(false)
+        else
+          puts "no match found for #{@tv_show_name} - #{@code}"
+        end
+
       else
         puts "match found for #{@tv_show_name} - #{@code}"
       end
