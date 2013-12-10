@@ -34,7 +34,7 @@ module FreeboxOSConnector
       return json["result"]
     else
       puts json
-      raise "une erreur s'est produite pendant l'authorization"
+      puts "une erreur s'est produite pendant l'authorization"
     end
   end
 
@@ -123,56 +123,31 @@ module FreeboxOSConnector
     json = @@discover_client["upload/"].post(params.to_json, get_session_header(session_token))
 
     response_upload = get_response(json)
-    upload_id = response_upload["id"]
-    url = URI.parse("http://mafreebox.freebox.fr/api/v1/upload/#{upload_id}/send")
-    File.open("C:\\srt\\#{filename_original}") do |file|
-      req = Net::HTTP::Post::Multipart.new url.path,
-                                           {"file" => UploadIO.new(file, "text/plain", new_filename),
-                                            'X-Fbx-App-Auth' => session_token}
-      res = Net::HTTP.start(url.host, url.port) do |http|
-        puts http.request(req)
+
+    if !response_upload.nil?
+      puts "send file!!!!"
+
+      upload_id = response_upload["id"]
+
+      url = URI.parse("http://mafreebox.freebox.fr/api/v1/upload/#{upload_id}/send")
+      File.open("C:\\srt\\#{filename_original}") do |file|
+        req = Net::HTTP::Post::Multipart.new url.path,
+                                             {"file" => UploadIO.new(file, "text/plain", new_filename),
+                                              'X-Fbx-App-Auth' => session_token}
+        res = Net::HTTP.start(url.host, url.port) do |http|
+          puts http.request(req)
+        end
+        puts res
       end
-      puts res
     end
+
 
   end
 
 end
 
 
-def is_movie(filename, movie_name)
-  extensions = [".mp4", ".mkv", ".avi"]
-  isMovie = extensions.any?{ |e| filename.end_with?(e)}
-  if isMovie
 
-    splited_name = movie_name.split(' ')
-    splited_name.each do |s|
-      if !filename.include?(s)
-        return false
-      end
-    end
-    return true
-  else
-    return false
-  end
-end
-
-def send_subtitle_with_movie( directory, movie_name, subtitle_name, session_token )
-  list_directory = FreeboxOSConnector.list_directory(session_token, directory)
-  list_directory_without_dot_dir = list_directory.select { |d| d["name"] != "." and d["name"] != ".." }
-
-  list_directory_without_dot_dir.each do |f|
-    if f["mimetype"] == "inode/directory"
-      send_subtitle_with_movie(f['path'], movie_name, subtitle_name, session_token)
-    else
-      if is_movie(f["name"], movie_name )
-        name_srt = f["name"][0..-4] + "srt"
-        FreeboxOSConnector.upload_file(session_token, directory, subtitle_name, name_srt)
-        break
-      end
-    end
-  end
-end
 
 
 #FreeboxOSConnector.initialize
@@ -193,7 +168,7 @@ end
 #puts session_token
 #tv_show_name = 'The Walking Dead'
 #code = 'S04E05'
-#videos_directory = "L0Rpc3F1ZSBkdXIvVmlkw6lvcw=="
+
 #
 #
 #
