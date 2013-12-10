@@ -140,39 +140,7 @@ module FreeboxOSConnector
 end
 
 
-def is_movie(filename, movie_name)
-  extensions = [".mp4", ".mkv", ".avi"]
-  isMovie = extensions.any?{ |e| filename.end_with?(e)}
-  if isMovie
 
-    splited_name = movie_name.split(' ')
-    splited_name.each do |s|
-      if !filename.include?(s)
-        return false
-      end
-    end
-    return true
-  else
-    return false
-  end
-end
-
-def send_subtitle_with_movie( directory, movie_name, subtitle_name, session_token )
-  list_directory = FreeboxOSConnector.list_directory(session_token, directory)
-  list_directory_without_dot_dir = list_directory.select { |d| d["name"] != "." and d["name"] != ".." }
-
-  list_directory_without_dot_dir.each do |f|
-    if f["mimetype"] == "inode/directory"
-      send_subtitle_with_movie(f['path'], movie_name, subtitle_name, session_token)
-    else
-      if is_movie(f["name"], movie_name )
-        name_srt = f["name"][0..-4] + "srt"
-        FreeboxOSConnector.upload_file(session_token, directory, subtitle_name, name_srt)
-        break
-      end
-    end
-  end
-end
 
 
 #FreeboxOSConnector.initialize
@@ -193,7 +161,7 @@ end
 #puts session_token
 #tv_show_name = 'The Walking Dead'
 #code = 'S04E05'
-#videos_directory = "L0Rpc3F1ZSBkdXIvVmlkw6lvcw=="
+
 #
 #
 #

@@ -9,6 +9,15 @@ module BetaseriesConnector
   @@url = 'http://localhost:3000/login/return'
   @@client = RestClient::Resource.new(@@host)
 
+  def self.get_user(code)
+    param = {"client_id" => @@public_key, "client_secret" => @@private_key, "redirect_uri" => @@url, "code" => code }
+    body = URI.encode_www_form(param)
+    json = @@client["members/access_token"].post(body,
+                                                 :'X-BetaSeries-Key' => @@public_key,
+                                                 :'Content-Type' => 'application/x-www-form-urlencoded')
+
+    return JSON.parse(json)
+  end
 
   def self.get_user_token(code)
     param = {"client_id" => @@public_key, "client_secret" => @@private_key, "redirect_uri" => @@url, "code" => code }
