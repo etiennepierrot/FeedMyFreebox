@@ -22,25 +22,26 @@ class Episode
 
     @subtitles = Array.new
     hash_subtitles.each do |hs|
-      if hs["file"].end_with?('.srt')
-        SubtitleUnzipper.get_distant_path(hs["url"], hs["file"])
+      if hs['file'].end_with?('.srt')
+        SubtitleUnzipper.get_distant_path(hs['url'], hs['file'])
         subtitle = Subtitle.new(hs)
         @subtitles.push subtitle
       else
-        if hs["file"].include?('zip')
+        if hs['file'].include?('zip')
 
-          data = SubtitleUnzipper.get_distant_path(hs["url"], hs["file"])
+          data = SubtitleUnzipper.get_distant_path(hs['url'], hs['file'])
           files = SubtitleUnzipper.unzip_file(data)
 
           files.each do |f|
             subtitle = Hash.new
-            subtitle["file"] = f
+            subtitle['file'] = f
             @subtitles.push Subtitle.new(subtitle)
           end
 
         end
       end
     end
+    #@subtitles.each{|s| puts s.file}
     set_subtitles_of_know_team(teams)
   end
 
@@ -60,15 +61,15 @@ class Episode
     @torrents.each do |torrent|
       @teams_who_have_subtitles.each do |team|
         if is_title_match_recognized_team(team, torrent.title)
-          torrent_with_team = {"torrent" => torrent, "team" => team}
-
+          torrent_with_team = {'torrent' => torrent, 'team' => team}
           torrent_of_team_with_subtitles.push(torrent_with_team)
         end
       end
     end
 
+    puts torrent_of_team_with_subtitles.each{|t| puts t['torrent'].seed.to_i}
 
-    best_choice = torrent_of_team_with_subtitles.max_by{|x| x["torrent"].seed}
+    best_choice = torrent_of_team_with_subtitles.max_by{|x| x['torrent'].seed.to_i}
 
     if !@subtitles_of_know_teams.nil? and !best_choice.nil?
       best_choice["subtitle"] = @subtitles_of_know_teams.select{ |s| is_title_match_recognized_team(best_choice["team"], s.file)}.take(1)
@@ -125,8 +126,6 @@ class Episode
     FreeboxOSConnector.make_directory( session_token, videos_directory, tv_show_name )
     list_video_directory = FreeboxOSConnector.list_directory(session_token, videos_directory)
     directory = list_video_directory.select{ |f| f["name"] == tv_show_name and f["mimetype"] == "inode/directory"}[0]
-
-
     tv_show_directory =  directory["path"]
     FreeboxOSConnector.create_download(session_token, torrent_url, tv_show_directory)
 
