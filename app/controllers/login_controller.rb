@@ -33,16 +33,29 @@ class LoginController < ApplicationController
     shows = BetaseriesConnector.get_episodes(@user.betaseries_token)
     teams = [ ["LOL"], ["KILLERS"], ["IMMERSE", "IMM"], ["DIMENSION","DIM"], ["WEB-DL"], ["2HD"], ["ASAP"]]
 
+    tv_shows = Array.new
+    shows.each do |s|
+      logger.info "Fill with beta series"
+      t = TvShowFactory.create_tv_show(s, 2, @user.betaseries_token)
+      logger.info t.to_yaml
+      t.save!
+      tv_shows.push(t)
+    end
 
-    tv_shows = shows.map { |s| TvShow.new(s, 3)}
-#tv_shows = Array.new
-#tv_shows.push TvShow.new(shows[1], NB_EPISODE_MAX)
+
+
+    if @user.tv_shows.nil?
+      @user.tv_shows = Array.new
+    end
 
     tv_shows.each do |tv_show|
-      tv_show.fetch_subtitles_available(@user.betaseries_token, teams)
-      tv_show.episodes.each do |episode|
-        episode.find_torrent(true, @freebox.session_token)
-      end
+      tv_show.save!
+      logger.info  'Collections :'
+      @user.tv_shows.push(tv_show)
+      #tv_show.fetch_subtitles_available(@user.betaseries_token, teams)
+      #tv_show.episodes.each do |episode|
+      #  episode.find_torrent(true, @freebox.session_token)
+      #end
     end
 
 

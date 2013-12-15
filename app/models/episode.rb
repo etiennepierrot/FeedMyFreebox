@@ -1,19 +1,13 @@
 require_relative 'subtitle'
 require_relative '../../lib/subtitle_unzipper'
 
-class Episode
+class Episode < ActiveRecord::Base
+  has_many :subtitles
+  belongs_to :tv_show
 
-  attr_accessor :betaseries_id, :code, :subtitles, :torrent,:tv_show_name, :teams_who_have_subtitles, :torrents,
+  attr_accessible :betaseries_id, :code, :torrent,:tv_show_name, :teams_who_have_subtitles, :torrents,
                 :subtitles_of_know_teams
 
-  def initialize(episode_hash, tv_show_name)
-    @betaseries_id = episode_hash["id"]
-    @code = episode_hash["code"]
-    @tv_show_name = tv_show_name
-    @teams_who_have_subtitles = Array.new
-    @torrents = Array.new
-    @subtitles_of_know_teams = Array.new
-  end
 
   def fetch_subtitles_available(user_token, teams)
 

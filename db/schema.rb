@@ -11,7 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131208201529) do
+ActiveRecord::Schema.define(:version => 20131215221530) do
+
+  create_table "episodes", :force => true do |t|
+    t.string   "betaseries_id"
+    t.string   "code"
+    t.string   "tv_show_name"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "tv_show_id"
+  end
+
+  create_table "followers", :force => true do |t|
+    t.integer  "tv_show_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "freeboxes", :force => true do |t|
     t.integer  "track_authorization_id"
@@ -25,10 +41,21 @@ ActiveRecord::Schema.define(:version => 20131208201529) do
     t.string   "session_token"
   end
 
+  create_table "subtitles", :force => true do |t|
+    t.string   "betaseries_id"
+    t.string   "path"
+    t.string   "language"
+    t.string   "file"
+    t.integer  "episode_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "tv_shows", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "betaseries_id"
+    t.string   "title"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "users", :force => true do |t|

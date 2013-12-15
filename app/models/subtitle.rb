@@ -1,10 +1,4 @@
-class Subtitle
-  attr_accessor :url, :file, :language
-
-  def initialize(hash_subtitle)
-    @url = hash_subtitle["url"]
-    @file = hash_subtitle["file"]
-    @language = hash_subtitle["language"]
-  end
-
+class Subtitle < ActiveRecord::Base
+  belongs_to :episode
+  attr_accessible :path, :file, :language, :betaseries_id
 end
