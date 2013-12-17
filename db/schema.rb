@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131215221530) do
+ActiveRecord::Schema.define(:version => 20131216231504) do
 
   create_table "episodes", :force => true do |t|
     t.string   "betaseries_id"
@@ -49,6 +49,15 @@ ActiveRecord::Schema.define(:version => 20131215221530) do
     t.integer  "episode_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "team_id"
+  end
+
+  create_table "teams", :force => true do |t|
+    t.string   "tag"
+    t.string   "name"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "subtitle_id"
   end
 
   create_table "tv_shows", :force => true do |t|
@@ -64,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20131215221530) do
     t.string   "betaseries_token"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.string   "session_token"
   end
 
 end

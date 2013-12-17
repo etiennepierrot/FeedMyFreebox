@@ -26,7 +26,6 @@ module EpisodeFactory
           end
         end
       end
-
     end
 
     episode.save!
@@ -37,34 +36,6 @@ module EpisodeFactory
     return episode
   end
 
-  def self.fetch_subtitles_available(episode, user_token, teams)
 
-    puts "fetch #{episode.tv_show_name} #{episode.code}"
-    hash_subtitles = BetaseriesConnector.get_subtitles(user_token, @betaseries_id)
-
-    @subtitles = Array.new
-    hash_subtitles.each do |hs|
-      if hs['file'].end_with?('.srt')
-        SubtitleUnzipper.get_distant_path(hs['url'], hs['file'])
-        subtitle = Subtitle.new(hs)
-        @subtitles.push subtitle
-      else
-        if hs['file'].include?('zip')
-
-          data = SubtitleUnzipper.get_distant_path(hs['url'], hs['file'])
-          files = SubtitleUnzipper.unzip_file(data)
-
-          files.each do |f|
-            subtitle = Hash.new
-            subtitle['file'] = f
-            @subtitles.push Subtitle.new(subtitle)
-          end
-
-        end
-      end
-    end
-    #@subtitles.each{|s| puts s.file}
-    set_subtitles_of_know_team(teams)
-  end
 
 end

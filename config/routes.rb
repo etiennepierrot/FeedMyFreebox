@@ -1,4 +1,13 @@
 FeedMyFreebox::Application.routes.draw do
+  resources :teams
+
+
+  get "episode/update"
+
+  get "episode/pick_torrent"
+
+  get "episode/send"
+
   get "freeboxes/attach"
   get "freeboxes/get"
   get "freeboxes/confirm"

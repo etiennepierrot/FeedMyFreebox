@@ -3,7 +3,7 @@ module SubtitleFactory
   def self.create_subtitle(hash_subtitle)
 
     subtitles = Subtitle.find_all_by_betaseries_id(hash_subtitle['id'])
-    Rails.logger.info "Subtitle object :"
+    Rails.logger.info 'Subtitle object :'
     Rails.logger.info subtitles.length.to_s
     if subtitles.nil? or subtitles.length == 0
 
@@ -13,9 +13,13 @@ module SubtitleFactory
 
         subtitle = Subtitle.new
         subtitle.betaseries_id = hash_subtitle['id']
-        subtitle.file = hash_subtitle["file"]
-        subtitle.language = hash_subtitle["language"]
-        subtitle.path =  SubtitleUnzipper.get_distant_path(hash_subtitle['url'], hash_subtitle['file'])
+        subtitle.file = hash_subtitle['file']
+        subtitle.language = hash_subtitle['language']
+        path =  SubtitleUnzipper.get_distant_path(hash_subtitle['url'], hash_subtitle['file'])
+        subtitle.path = path.encode('UTF-8', {:invalid => :replace, :undef => :replace, :replace => '?'})
+        Rails.logger.info "Path : " + subtitle.path
+        find_team(subtitle)
+        subtitle.save!
         subtitles.push subtitle
       else
         if hash_subtitle['file'].include?('zip')
@@ -23,8 +27,11 @@ module SubtitleFactory
           files = SubtitleUnzipper.unzip_file(data)
           files.each do |f|
             subtitle = Subtitle.new
-            subtitle.path = "C:\\srt\\" + f
+            path =  "C:\\srt\\" + f
+            subtitle.path = path.encode('UTF-8', {:invalid => :replace, :undef => :replace, :replace => '?'})
             subtitle.betaseries_id = hash_subtitle['id']
+            find_team(subtitle)
+            subtitle.save!
             subtitles.push subtitle
           end
         end
@@ -32,5 +39,18 @@ module SubtitleFactory
     end
 
     return subtitles
+  end
+
+  def self.find_team(subtitle)
+    Rails.logger.info subtitle.to_yaml
+    teams = Team.find(:all)
+    teams.each do |t|
+      tags = t.get_teams_tag
+      tags.each do |tag|
+        if subtitle.path.downcase.include?(tag.downcase)
+          subtitle.team = t
+        end
+      end
+    end
   end
 end

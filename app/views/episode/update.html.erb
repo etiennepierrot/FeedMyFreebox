@@ -1,0 +1,22 @@
+<h1>Episode#update</h1>
+<p>Episode à voir :</p>
+
+<table>
+  <tr>
+    <th>Serie</th>
+    <th>Code</th>
+   </tr>
+
+  <% @tv_shows.each do |t|
+    t.episodes.each do |e|  %>
+  <tr>
+    <td><%= t.title %></td>
+    <td><%= e.code%></td>
+  </tr>
+    <% end %>
+  <% end %>
+
+
+
+
+</table>

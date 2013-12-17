@@ -140,8 +140,12 @@ module FreeboxOSConnector
         puts res
       end
     end
+  end
 
-
+  def self.open_session_with_app_token(app_token)
+    challenge = get_challenge
+    password = create_password(app_token, challenge)
+    return open_session(password)['session_token']
   end
 
 end
