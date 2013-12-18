@@ -130,7 +130,8 @@ module FreeboxOSConnector
       upload_id = response_upload["id"]
 
       url = URI.parse("http://mafreebox.freebox.fr/api/v1/upload/#{upload_id}/send")
-      File.open("C:\\srt\\#{filename_original}") do |file|
+      Rails.logger.info filename_original
+      File.open(filename_original) do |file|
         req = Net::HTTP::Post::Multipart.new url.path,
                                              {"file" => UploadIO.new(file, "text/plain", new_filename),
                                               'X-Fbx-App-Auth' => session_token}

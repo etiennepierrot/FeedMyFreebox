@@ -1,8 +1,9 @@
-class Torrent
-  attr_reader :title, :seed, :url
-  def initialize(title, seed, url)
-    @title = title
-    @seed = seed
-    @url = url
+class Torrent < ActiveRecord::Base
+  belongs_to :team
+  attr_accessible :title, :seed, :url, :isHD
+
+  def name
+    return title
   end
+
 end

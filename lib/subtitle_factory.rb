@@ -18,7 +18,7 @@ module SubtitleFactory
         path =  SubtitleUnzipper.get_distant_path(hash_subtitle['url'], hash_subtitle['file'])
         subtitle.path = path.encode('UTF-8', {:invalid => :replace, :undef => :replace, :replace => '?'})
         Rails.logger.info "Path : " + subtitle.path
-        find_team(subtitle)
+        TeamDetector.find_team(subtitle)
         subtitle.save!
         subtitles.push subtitle
       else
@@ -30,7 +30,7 @@ module SubtitleFactory
             path =  "C:\\srt\\" + f
             subtitle.path = path.encode('UTF-8', {:invalid => :replace, :undef => :replace, :replace => '?'})
             subtitle.betaseries_id = hash_subtitle['id']
-            find_team(subtitle)
+            TeamDetector.find_team(subtitle)
             subtitle.save!
             subtitles.push subtitle
           end
@@ -39,18 +39,5 @@ module SubtitleFactory
     end
 
     return subtitles
-  end
-
-  def self.find_team(subtitle)
-    Rails.logger.info subtitle.to_yaml
-    teams = Team.find(:all)
-    teams.each do |t|
-      tags = t.get_teams_tag
-      tags.each do |tag|
-        if subtitle.path.downcase.include?(tag.downcase)
-          subtitle.team = t
-        end
-      end
-    end
   end
 end
