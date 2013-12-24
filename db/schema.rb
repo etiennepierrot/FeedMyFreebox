@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131218000443) do
+ActiveRecord::Schema.define(:version => 20131223081417) do
 
   create_table "episodes", :force => true do |t|
     t.string   "betaseries_id"
@@ -69,8 +69,9 @@ ActiveRecord::Schema.define(:version => 20131218000443) do
     t.string   "url"
     t.boolean  "isHD"
     t.integer  "seed"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "torrent_file_url"
   end
 
   create_table "tv_shows", :force => true do |t|

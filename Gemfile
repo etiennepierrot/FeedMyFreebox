@@ -13,6 +13,7 @@ gem 'ruby-hmac'
 gem 'multipart-post'
 gem "twitter-bootstrap-rails"
 gem 'rubyzip'
+gem 'bencode'
 
 
 

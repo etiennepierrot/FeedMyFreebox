@@ -21,6 +21,7 @@ module TorrentFactory
         item.seed = thing.at_xpath('torrent:seeds').content
         item.url = thing.at_xpath('torrent:magnetURI').content
         item.isHD = item.title.include?('720p')
+        item.torrent_file_url = thing.at_xpath('enclosure').attr('url')
         TeamDetector.find_team(item)
         episode.torrents.push item
       end
